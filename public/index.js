@@ -7,7 +7,7 @@
     let $pageFeedbackValue;
     let $feedbackIcon;
 
-    // some control varialbe
+    // some control variables
     let urlParts;
     // this one will be the result of the constraints variable for the current page
     let pageConstraints;
@@ -64,6 +64,7 @@
     function parseWeatherData(weatherData)
     {
         $pageFeedbackValue.innerHTML = weatherData;
+        $pageFeedbackValue.dataset.weatherData = weatherData;
         if(parseInt(weatherData)>=pageConstraints.boundSeparator)
         {
             $feedbackIcon.style.color=pageConstraints.above;
@@ -76,10 +77,10 @@
 
     window.addEventListener('load', function()
     {
-        $pageFeedback = $(`feedback`);
-        $pageFeedbackValue = $(`feedbackValue`);
-        $feedbackIcon = $('feedbackIcon');
-        let $cityInput = $('city');
+        $pageFeedback =         $(`feedback`);
+        $pageFeedbackValue =    $(`feedbackValue`);
+        $feedbackIcon =         $('feedbackIcon');
+        let $cityInput =          $('city');
 
         urlParts = parseLocation();
         let city = urlParts?.args?.city;
@@ -91,8 +92,6 @@
             });
         }
 
-
-
         if(urlParts.page && urlParts.page !== "index")
         {
             pageConstraints =constraints[urlParts.page];
@@ -101,7 +100,24 @@
                 .then(json=>{
                     parseWeatherData(json.data);
                 });
+            if(urlParts.page === 'temperature')
+            {
+                $('temperatureToggle').addEventListener('click', function(evt){
+                    let celsius = evt.target.innerHTML === 'Celsius';
+                    if(celsius)
+                    {
+                        evt.target.innerHTML = 'Farenheit';
+                        $pageFeedbackValue.innerHTML = celsiusToFarenheit(parseInt($pageFeedbackValue.dataset.weatherData));
+                    }
+                    else
+                    {
+                        evt.target.innerHTML = 'Celsius';
+                        $pageFeedbackValue.innerHTML = $pageFeedbackValue.dataset.weatherData;
+                    }
+                });
+            }
         }
+
 
         $('citySearchButton').addEventListener('click', function(){
             let city = $cityInput.value;
