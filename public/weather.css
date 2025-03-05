@@ -13,10 +13,21 @@ nav ul{
     background-color:red;
 }
 
-button a
+nav button a
 {
     text-decoration: none;
     color:black;
+}
+
+nav button
+{
+    border:0px;
+    background-color:transparent;
+}
+
+nav button:hover
+{
+    font-weight: bold;
 }
 
 body
