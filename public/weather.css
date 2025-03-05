@@ -18,3 +18,9 @@ button a
     text-decoration: none;
     color:black;
 }
+
+body
+{
+    background-repeat:no-repeat;
+    background-position: 50% 50%;
+}

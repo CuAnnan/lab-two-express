@@ -22,6 +22,8 @@
         'wind':         {field:'windSpeed', boundSeparator:19, below:'green', above:'orange'}
     };
 
+
+
     // helper functions
     function $(elementId)
     {
@@ -68,11 +70,14 @@
         if(parseInt(weatherData)>=pageConstraints.boundSeparator)
         {
             $feedbackIcon.style.color=pageConstraints.above;
+            return true;
         }
         else
         {
             $feedbackIcon.style.color=pageConstraints.below;
+            return false;
         }
+
     }
 
     window.addEventListener('load', function()
@@ -98,7 +103,8 @@
             fetch(`/getWeatherJSON?city=${city}&field=${pageConstraints.field}`)
                 .then(res=>res.json())
                 .then(json=>{
-                    parseWeatherData(json.data);
+                    let above = parseWeatherData(json.data);
+                    document.body.style.backgroundImage = `url(./imgs/${urlParts.page}-${above?'above':'below'}.png)`
                 });
             if(urlParts.page === 'temperature')
             {
